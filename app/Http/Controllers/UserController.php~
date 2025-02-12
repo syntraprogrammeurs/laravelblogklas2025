@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         //de homepagina van mijn users
-        $users = User::paginate(10);
+        $users = User::paginate(10)->orderBy('id','desc');
 
         //return view('backend.users.index',['users' => $users, 'roles' => $roles]);
         return view('backend.users.index', compact('users'));
@@ -55,7 +55,7 @@ class UserController extends Controller
         User::create($validatedData);
 
         //redirect naar users
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('message', 'User created successfully!');
     }
 
     /**

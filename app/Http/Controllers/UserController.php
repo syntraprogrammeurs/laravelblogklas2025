@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         //de homepagina van mijn users
-        $users = User::paginate(10);
+        $users = User::orderBy('id','desc')->paginate(10);
 
         //return view('backend.users.index',['users' => $users, 'roles' => $roles]);
         return view('backend.users.index', compact('users'));
