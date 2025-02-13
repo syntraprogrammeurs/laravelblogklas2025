@@ -52,7 +52,16 @@
                             <td>{{$user->photo_id}}</td>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
-                            <td>{{$user->role_id ? $user->role->name : 'No role'}}</td>
+                            <td>
+                                <div>
+                                    @foreach($user->roles as $role)
+                                        <span class="badge rounded-pill text-bg-primary">
+                                        <i class="fas fa-user-shield"></i>
+                                            {{$role->name}}
+                                        </span>
+                                    @endforeach
+                                </div>
+                            </td>
                             <td>
                                 <div class="{{$user->is_active==1 ? 'badge rounded-pill text-bg-success':'badge rounded-pill text-bg-danger'}}">
                                     {{$user->is_active==1 ? 'Active':'Not Active'}}

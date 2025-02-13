@@ -37,7 +37,7 @@
             </div>
             <div class="form-group">
                 <label for="role_id">Select Role: (ctrl+click multiple)</label>
-                <select class="form-select" name="role_id[]" id="role_id" multiple>
+                <select class="form-select" name="role_id" id="role_id" multiple>
                     <option value="" disabled>Select Role</option>
                     @foreach($roles as $id =>$role)
                         <option value="{{$id}}">{{$role}}</option>

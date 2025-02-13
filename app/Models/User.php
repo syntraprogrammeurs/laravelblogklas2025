@@ -21,7 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id',//dit is de kolom die de foreignId aanmaakt
         'photo_id',
         'is_active'
     ];
@@ -48,7 +47,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function role(){
-        return $this->belongsTo(Role::class);
+    public function roles(){
+        return $this->belongsToMany(Role::class,'role_user','user_id','role_id');
     }
 }
