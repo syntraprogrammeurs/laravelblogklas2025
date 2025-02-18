@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         //de homepagina van mijn users
-        $users = User::withTrashed()->with(['roles','photo'])->orderBy('id', 'desc')->paginate(7);
+        $users = User::withTrashed()->with(['roles','photo'])->orderBy('id', 'desc')->paginate(8);
 
         //return view('backend.users.index',['users' => $users, 'roles' => $roles]);
         return view('backend.users.index', compact('users'));
