@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Photo;
 use App\Models\Role;
 use App\Models\User;
@@ -13,14 +15,13 @@ use Illuminate\Support\Str;
 class UserController extends Controller
 {
     protected $folder = 'users';
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         //de homepagina van mijn users
-        $users = User::withTrashed()->with(['roles','photo'])->orderBy('id', 'desc')->paginate(8);
+        $users = User::withTrashed()->with(['roles','photo'])->orderBy('id', 'desc')->paginate(7);
 
         //return view('backend.users.index',['users' => $users, 'roles' => $roles]);
         return view('backend.users.index', compact('users'));
@@ -29,33 +30,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-
         //
-        $messages = [
-            'name.required' => 'De naam is verplicht.',
-            'email.required' => 'Het e-mailadres is verplicht.',
-            'email.email' => 'Voer een geldig e-mailadres in.',
-            'email.unique' => 'Dit e-mailadres is al in gebruik.',
-            'password.required' => 'Het wachtwoord is verplicht.',
-            'password.min' => 'Het wachtwoord moet minimaal :min tekens bevatten.',
-            'role_id.required' => 'Selecteer minimaal 1 rol voor de gebruiker.',
-            'role_id.*.exists' => '1 van de geslecteerde rollen bestaat niet.',
-            'role_id.array' => 'De rollen moeten een lijst van ID\'s zijn.',
-            'is_active.required' => 'Selecteer of de gebruiker actief is.',
-            'photo_id.image' => 'De geüploade afbeelding moet een geldig afbeeldingsbestand zijn.',];
-
-        //wegschrijven van de nieuwe user
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'is_active' => 'required|in:0,1',
-            'role_id' => 'required|array|exists:roles,id',
-            'password' => 'required|min:6',
-            'photo_id' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
-        ], $messages);
-
+        $validatedData = $request->validated();
         //paswoord hashen
         $validatedData['password'] = Hash::make($validatedData['password']);
 
@@ -111,9 +89,11 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::with('roles', 'photo')->findOrFail($id);
+
+       // $user = User::with('roles', 'photo')->findOrFail($id);
+        $user->load('roles','photo');
         $roles = Role::pluck('name', 'id')->all();
         $photoDetails = ['exists' => false, 'filesize' => 0, 'width' => 'N/A', 'height' => 'N/A', 'extension' => ''];    // Controleer of er een foto is en of deze bestaat op de 'public' disk
         if ($user->photo && Storage::disk('public')->exists($user->photo->path)) {
@@ -132,37 +112,13 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
         // Haal de gebruiker op of geef een 404 als deze niet bestaat
         $user = User::findOrFail($id);
 
         // Validatieberichten
-        $messages = [
-            'name.required'      => 'De naam is verplicht.',
-            'email.required'     => 'Het e-mailadres is verplicht.',
-            'email.email'        => 'Voer een geldig e-mailadres in.',
-            'email.unique'       => 'Dit e-mailadres is al in gebruik.',
-            'role_id.required'   => 'Selecteer minimaal één rol.',
-            'role_id.array'      => 'De rollen moeten een lijst van ID\'s zijn.',
-            'role_id.*.exists'   => 'Een van de geselecteerde rollen bestaat niet.',
-            'is_active.required' => 'Selecteer of de gebruiker actief is.',
-            'password.min'       => 'Het wachtwoord moet minimaal :min tekens bevatten.',
-            'photo_id.image'     => 'De geüploade afbeelding moet een geldig afbeeldingsbestand zijn.',
-            'photo_id.mimes'     => 'De afbeelding moet een bestand van het type: jpg, jpeg, png, gif zijn.',
-            'photo_id.max'       => 'De afbeelding mag maximaal :max kilobytes zijn.',
-        ];
-
-        // Valideer de input; de e-mail validatie houdt rekening met de huidige gebruiker
-        $validatedData = $request->validate([
-            'name'      => 'required|string|max:255',
-            'email'     => 'required|email|unique:users,email,' . $user->id,
-            'role_id'   => 'required|array',
-            'role_id.*' => 'exists:roles,id',
-            'is_active' => 'required|in:0,1',
-            'password'  => 'nullable|min:6',
-            'photo_id'  => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-        ], $messages);
+        $validatedData = $request->validated();
 
         // Verwerk het wachtwoord: als er een nieuw wachtwoord is ingevuld, hash deze; anders laat je de oude waarde intact.
         if (!empty($validatedData['password'])) {
@@ -214,10 +170,12 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      */
     public
-    function destroy(string $id)
+    function destroy(User $user)
     {
         //delete van een user
-        $user = User::with('photo')->findOrFail($id);
+        //$user = User::with('photo')->findOrFail($id);
+
+        $user->load('photo');
             //controleer of het fysieke bestand bestaat
             if(Storage::disk('public')->exists($user->photo->path)){
                 Storage::disk('public')->delete($user->photo->path);

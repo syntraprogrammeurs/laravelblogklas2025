@@ -40,7 +40,17 @@
                 <li>
                     <hr class="dropdown-divider"/>
                 </li>
-                <li><a class="dropdown-item" href="#!">Logout</a></li>
+                <li> <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="dropdown-item">
+                            {{ __('Log Out') }}
+                        </button>
+                    </form> </li>
+
+
+
+
+
             </ul>
         </li>
     </ul>
