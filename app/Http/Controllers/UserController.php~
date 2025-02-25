@@ -20,6 +20,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        //policy bij zetten
+        $this->authorize('ViewAdminPanel',User::class);
         //de homepagina van mijn users
         $users = User::withTrashed()->with(['roles','photo'])->orderBy('id', 'desc')->paginate(7);
 
@@ -112,10 +114,10 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, string $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
         // Haal de gebruiker op of geef een 404 als deze niet bestaat
-        $user = User::findOrFail($id);
+        //$user = User::findOrFail($id);
 
         // Validatieberichten
         $validatedData = $request->validated();

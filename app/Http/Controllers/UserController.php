@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Photo;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -14,12 +15,15 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
     protected $folder = 'users';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        //policy bij zetten
+        $this->authorize('ViewAdminPanel',User::class);
         //de homepagina van mijn users
         $users = User::withTrashed()->with(['roles','photo'])->orderBy('id', 'desc')->paginate(7);
 

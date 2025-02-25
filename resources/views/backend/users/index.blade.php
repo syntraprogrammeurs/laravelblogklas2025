@@ -88,6 +88,7 @@
                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info btn-sm" title="Edit User">
                                 <i class="fas fa-edit text-white"></i>
                             </a>
+
                             @if($user->trashed())
                                 <!-- Restore button -->
                                 <form method="POST" action="{{ route('users.restore', $user->id) }}" style="display:inline;">

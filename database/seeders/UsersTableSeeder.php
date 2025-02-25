@@ -27,6 +27,16 @@ class UsersTableSeeder extends Seeder
            'created_at'=>now(),
            'updated_at'=>now(),
         ]);
+        DB::table('users')->insert([
+            'name'=>'Tim',
+            'is_active'=>1,
+            'email_verified_at'=>now(),
+            'email'=>'timtest@gmail.com',
+            'photo_id'=>Photo::inRandomOrder()->first()->id,
+            'password'=>Hash::make('12345678'),
+            'created_at'=>now(),
+            'updated_at'=>now(),
+        ]);
         User::factory(500)->create();
         //User::factory()->count(50)->create();
     }

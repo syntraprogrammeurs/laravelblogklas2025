@@ -46,7 +46,7 @@ class RegisteredUserController extends Controller
         //role toevoegen
         $role = Role::where('name','subscriber')->first();
         $user->roles()->attach($role->id);
-
+        
         event(new Registered($user));
 
         Auth::login($user);
