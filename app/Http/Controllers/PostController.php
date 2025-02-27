@@ -41,8 +41,18 @@ class PostController extends Controller
     {
         //
         $validated = $request->validated();
-        $validated['slug']=Str::slug($validated['title']);
+
         $validated['author_id']=auth()->user()->id;
+        // Genereer basis slug
+        $slug = Str::slug($validated['title']);
+        $originalSlug = $slug;
+        $counter = 1;
+        // Controleer of de slug al bestaat en pas deze aan indien nodig
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        $validated['slug'] = $slug;
         //afbeelding opslaan
         if($request->hasFile('photo_id')){
             $file = $request->file('photo_id');
