@@ -7,7 +7,6 @@
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="h3 mb-4">Nieuwe Post</h1>
-        @include('layouts.partials.form_error')
         <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
             @csrf
             <!-- Titel -->
@@ -75,6 +74,6 @@
                 <a href="{{ route('posts.index') }}" class="btn btn-secondary">Annuleren</a>
             </div>
         </form>
-
+        @include('layouts.partials.form_error')
     </div>
 @endsection
