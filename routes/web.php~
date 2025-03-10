@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BackendController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -25,12 +26,12 @@ Route::group(['prefix'=>'backend','middleware'=>['auth','admin','verified']],fun
 });
 
 Route::group(['prefix'=>'backend','middleware'=>['auth','verified']],function(){
-    Route::resource('/posts',PostController::class);
+    Route::resource('/posts',PostController::class)->scoped(['post'=>'slug']);
 });
 
 
 
-Route::get('/backend', function () {
+Route::get('/', function () {
     return view('backend.index');
 })->middleware(['auth', 'verified'])->name('backend.index');
 

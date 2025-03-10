@@ -10,13 +10,13 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Dashboard - @yield('title')</h1>
+                <h1 class="mt-4">@yield('title', 'Dashboard')</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">@yield('title')</li>
+                    @yield('breadcrumb', '<li class="breadcrumb-item active">Dashboard</li>')
                 </ol>
-                @yield('cards',View::make('layouts.partials.cards'))
-                @yield('charts',View::make('layouts.partials.charts'))
-              @yield('content')
+                {{--               @yield('cards', View::make('layouts.partials.cards'))--}}
+                {{--               @yield('charts', View::make('layouts.partials.charts'))--}}
+                @yield('content')
             </div>
         </main>
         @include('layouts.partials.footer')

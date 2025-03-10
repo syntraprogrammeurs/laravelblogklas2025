@@ -13,20 +13,67 @@
                 <a href="{{ route('posts.create') }}" class="btn btn-primary">Nieuwe Post</a>
             @endcan
         </div>
+
+        <form method="GET" action="{{route('posts.index')}}" class="mb-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-filter"></i> Filter Posts
+                </div>
+                <div class="card-body">
+                    <form method="GET" action="{{route('posts.index')}}">
+                        <div class="row g-3">
+{{--                            zoekveld--}}
+                            <div class="col-md-4">
+                                <label for="search" class="form-label fw-bold">
+                                    Search by Title or Content
+                                </label>
+                                <input type="text" name="search" id="search" class="form-control"
+                                placeholder="Enter Keyword..." value="{{request('search')}}">
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label fw-bold">Categories</label>
+                                <div class="d-flex flex-wrap">
+                                    <div class="d-flex flex-wrap">
+                                        @foreach($categories as $id => $name)
+                                            <div class="form-check me-3">
+                                                <input type="checkbox" name="category_ids[]" value="{{ $id }}" id="category-{{ $id }}"
+                                                       class="form-check-input"
+                                                    {{ in_array($id, request('category_ids', [])) ? 'checked' : '' }}>
+                                                <label for="category-{{ $id }}" class="form-check-label">{{ $name }}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+{{--                            filter en resetknop--}}
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                                <a href="{{ route('posts.index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-sync-alt"></i> Reset
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </form>
         <div class="card mb-4">
             <div class="card-header"><i class="fas fa-table me-1"></i> Overzicht van Posts</div>
             <div class="card-body">
+                <p class="text-muted">Showing {{ $posts->total() > 0 ? $posts->count() : 0 }} of {{ $posts->total() }} posts</p>
                 <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Id</th>
                         <th>Afbeelding</th>
-                        <th>Titel</th>
-                        <th>Auteur</th>
+                        <th>@sortablelink('title','Title')</th>
+                        <th>@sortablelink('author.name','Author')</th>
                         <th>Gepubliceerd</th>
                         <th>Categorieën</th>
-                        <th>Aangemaakt</th>
-                        <th>Bewerkt</th>
+                        <th>@sortablelink('created_at','Aangemaakt')</th>
+                        <th>@sortablelink('updated_at','Bewerkt')</th>
                         <th>Acties</th>
                     </tr>
                     </thead>
@@ -107,7 +154,8 @@
                     @endforeach
                     </tbody>
                 </table>
-                {{$posts->links()}}
+{{--                {{$posts->links()}}--}}
+                {!! $posts->appends(request()->except('page'))->render() !!}
             </div>
         </div>
     </div>

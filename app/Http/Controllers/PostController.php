@@ -20,8 +20,20 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts =Post::with(['author','photo','categories'])->latest()->paginate(5);
-        return view('backend.posts.index',compact('posts'));
+       $search = request('search');
+       $categoryIds = request('category_ids',[]);
+
+
+        $posts =Post::with(['author','photo','categories'])
+            ->published()
+            ->filter($search)
+            ->inCategories($categoryIds)
+            ->sortable()
+            ->paginate(5)
+            ->appends(request()->query());//;
+
+        $categories = Category::pluck('name','id');
+        return view('backend.posts.index',compact('posts','categories'));
     }
 
     /**

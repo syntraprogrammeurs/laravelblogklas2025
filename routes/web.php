@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BackendController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;

@@ -20,8 +20,20 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts =Post::with(['author','photo','categories'])->latest()->paginate(5);
-        return view('backend.posts.index',compact('posts'));
+       $search = request('search');
+       $categoryIds = request('category_ids',[]);
+
+
+        $posts =Post::with(['author','photo','categories'])
+            ->published()
+            ->filter($search)
+            ->inCategories($categoryIds)
+            ->latest()
+            ->paginate(5)
+            ->appends(request()->query());//;
+
+        $categories = Category::pluck('name','id');
+        return view('backend.posts.index',compact('posts','categories'));
     }
 
     /**
@@ -47,6 +59,12 @@ class PostController extends Controller
         $slug = Str::slug($validated['title']);
         $originalSlug = $slug;
         $counter = 1;
+        // Controleer of de slug al bestaat en pas deze aan indien nodig
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        $validated['slug'] = $slug;
         //afbeelding opslaan
         if($request->hasFile('photo_id')){
             $file = $request->file('photo_id');
