@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BackendController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -23,6 +24,16 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 Route::group(['prefix'=>'backend','middleware'=>['auth','admin','verified']],function(){
     Route::resource('/users', UserController::class);
     Route::patch('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::resource('/categories',CategoryController::class);
+    Route::patch('/categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
+    Route::delete('/categories/{id}/forceDelete', [CategoryController::class, 'forceDelete'])->name('categories.forceDelete');
+
+    //notification route
+    Route::patch('/notifications/{id}/read', function ($id) {
+        $notification = auth()->user()->notifications()->findOrFail($id);
+        $notification->markAsRead();
+        return back()->with('message', 'Notification marked as read.');
+    })->name('notifications.markAsRead');
 });
 
 Route::group(['prefix'=>'backend','middleware'=>['auth','verified']],function(){

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PostCreated;
 use App\Models\Category;
 use App\Models\Photo;
 use App\Models\Post;
@@ -55,6 +56,7 @@ class PostController extends Controller
         $validated = $request->validated();
 
         $validated['author_id']=auth()->user()->id;
+
         // Genereer basis slug
         $slug = Str::slug($validated['title']);
         $originalSlug = $slug;
@@ -77,6 +79,10 @@ class PostController extends Controller
         }
         $post = Post::create($validated);
         $post->categories()->sync($request->categories);
+
+        //events triggeren
+        PostCreated::dispatch($post);
+
         return redirect()->route('posts.index')->with('message','Post created successfully!');
     }
 
@@ -105,6 +111,7 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         //
+
         $this->authorize('update', $post);
         $validated = $request->validated();
         $validated['slug'] = Str::slug($validated['title']);

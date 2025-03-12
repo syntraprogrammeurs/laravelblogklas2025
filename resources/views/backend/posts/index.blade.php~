@@ -62,7 +62,7 @@
         <div class="card mb-4">
             <div class="card-header"><i class="fas fa-table me-1"></i> Overzicht van Posts</div>
             <div class="card-body">
-                
+                <p class="text-muted">Showing {{ $posts->total() > 0 ? $posts->count() : 0 }} of {{ $posts->total() }} posts</p>
                 <table class="table table-striped">
                     <thead>
                     <tr>

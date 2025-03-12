@@ -6,7 +6,7 @@
 @endsection
 @section('content')
     <div class="container-fluid px-4">
-        @include('layouts.partials.flash_message')
+{{--        @include('layouts.partials.flash_message')--}}
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h1 class="h3">Category Management</h1>
             @can('create', \App\Models\Category::class)
