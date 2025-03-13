@@ -21,28 +21,26 @@ class GlobalDataServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
-    {
-        //
-        //onderstaande variabelen wil ik als GLOBAL VIEW overal kunnen tonen
-        View::composer('*',function($view){
-            $totalUsers = Cache::remember('totalUsers',600, fn()=> User::count());
-            $activeUsers = Cache::remember('activeUsers',600, fn()=> User::where('is_active',1)->count());
-            $inactiveUsers = $totalUsers - $activeUsers;
+//    public function boot(): void
+//    {
+//        // Globale cache-gegevens voor alle views beschikbaar maken
+//        View::composer('*', function ($view) {
+//            // Cache gebruikersstatistieken
+//            $totalUsers = Cache::remember('totalUsers', 600, fn() => User::count());
+//            $activeUsers = Cache::remember('activeUsers', 600, fn() => User::where('is_active', 1)->count());
+//            $inactiveUsers = $totalUsers - $activeUsers;
+//
+//            // Cache post-statistieken
+//            $totalPosts = Cache::remember('totalPosts', 600, fn() => Post::count());
+//            $publishedPosts = Cache::remember('publishedPosts', 600, fn() => Post::where('is_published', 1)->count());
+//            $unpublishedPosts = $totalPosts - $publishedPosts;
+//
+//            // Stuur deze data naar alle views
+//            $view->with(compact(
+//                'totalUsers', 'activeUsers', 'inactiveUsers',
+//                'totalPosts', 'publishedPosts', 'unpublishedPosts'
+//            ));
+//        });
+//    }
 
-            $totalPosts = Cache::remember('totalPosts',600, fn()=> Post::count());
-            $publishedPosts = Cache::remember('publishedPosts',600, fn()=> Post::where('is_published',1)->count());
-            $unpublishedPosts = $totalPosts - $publishedPosts;
-
-            //bovenstaande uitsturen naar ALLE views
-            $view->with(compact(
-               'totalUsers','activeUsers','inactiveUsers','totalPosts','publishedPosts','unpublishedPosts'
-            ));
-        });
-
-
-
-
-
-    }
 }

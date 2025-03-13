@@ -24,8 +24,12 @@ class PostController extends Controller
        $search = request('search');
        $categoryIds = request('category_ids',[]);
 
+       //Concreet voorbeeld zonder author.roles:
+        //SELECT * FROM posts; -- Haalt alle posts op
+        //SELECT * FROM users WHERE id = ?; -- Wordt herhaald voor elke post
+        //SELECT * FROM roles INNER JOIN role_user WHERE user_id = ?; -- Wordt herhaald voor elke user
 
-        $posts =Post::with(['author','photo','categories'])
+        $posts =Post::with(['author.roles','photo','categories'])
             ->published()
             ->filter($search)
             ->inCategories($categoryIds)

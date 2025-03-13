@@ -99,8 +99,12 @@
                         <th>@sortablelink('author.name','Author')</th>
                         <th>Gepubliceerd</th>
                         <th>Categorieën</th>
-                        <th>@sortablelink('created_at','Aangemaakt')</th>
+                        <th>
+                            @sortablelink('created_at','Aangemaakt')
+
+                        </th>
                         <th>@sortablelink('updated_at','Bewerkt')</th>
+
                         <th>Acties</th>
                     </tr>
                     </thead>
@@ -114,6 +118,7 @@
                         <th>Categorieën</th>
                         <th>Aangemaakt</th>
                         <th>Bewerkt</th>
+
                         <th>Acties</th>
                     </tr>
                     </tfoot>
@@ -146,8 +151,20 @@
                                     <span class="badge bg-info">{{ $category->name }}</span>
                                 @endforeach
                             </td>
-                            <td>{{ $post->created_at->diffForHumans() }}</td>
-                            <td>{{ $post->updated_at->diffForHumans() }}</td>
+                            <td>
+
+                                    {{ $post->created_at->diffForHumans() }}
+                                    <br>
+                                    {{$post->creator->name ?? 'Onbekend'}}
+
+                            </td>
+                            <td class="d-flex flex-column">
+
+                                    {{ $post->updated_at->diffForHumans() }}
+                                <br>
+                                    {{$post->editor->name ?? 'Onbekend'}}
+
+                            </td>
                             <td class="align-middle">
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('posts.show', $post) }}"
