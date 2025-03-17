@@ -19,7 +19,7 @@ class ContactController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'message' => 'required'
+            'message' => 'required',
         ]);
 
         Mail::to('syntraprogrammeurs@gmail.com')->send(new ContactMail($data));

@@ -18,8 +18,8 @@ class PhotoFactory extends Factory
     {
         return [
             //
-            'path'=> 'https://placehold.co/640x480',
-            'alternate_text'=> fake()->sentence(6),
+            'path' => 'https://placehold.co/640x480',
+            'alternate_text' => fake()->sentence(6),
         ];
     }
 }

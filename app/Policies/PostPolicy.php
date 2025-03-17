@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\Post;
@@ -14,6 +15,7 @@ class PostPolicy
     public function viewAny(User $user): bool
     {
         $roles = $user->roles->pluck('name'); // Cache rollen in de variabele
+
         return $roles->contains('admin') ||
             $roles->contains('author') ||
             $roles->contains('subscriber');
