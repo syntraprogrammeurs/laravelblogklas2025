@@ -4,14 +4,15 @@ namespace App\Notifications;
 
 use App\Models\Post;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class NewPostNotification extends Notification
 {
     use Queueable;
+
     protected Post $post;
+
     /**
      * Create a new notification instance.
      */
@@ -28,7 +29,7 @@ class NewPostNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail','database'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -37,11 +38,11 @@ class NewPostNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Nieuwe post gepubliceerd:' . $this->post->title)
-            ->greeting('Hallo,' . $notifiable->name . ',')
+            ->subject('Nieuwe post gepubliceerd:'.$this->post->title)
+            ->greeting('Hallo,'.$notifiable->name.',')
             ->line('Er is een nieuwe post gepubliceerd:')
             ->line($this->post->title)
-            ->action('Bekijk Post', url(route('posts.show',$this->post->slug)))
+            ->action('Bekijk Post', url(route('posts.show', $this->post->slug)))
             ->line('Bedankt voor je aandacht!');
     }
 
@@ -54,10 +55,10 @@ class NewPostNotification extends Notification
     {
         return [
             //
-            'post_id'=>$this->post->id,
-            'title'=>$this->post->title,
-            'author'=>$this->post->author->name,
-            'url'=>route('posts.show', $this->post->slug)
+            'post_id' => $this->post->id,
+            'title' => $this->post->title,
+            'author' => $this->post->author()->first()->name,
+            'url' => route('posts.show', $this->post->slug),
         ];
     }
 }

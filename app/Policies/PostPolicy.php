@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\Post;
@@ -13,10 +14,9 @@ class PostPolicy
      */
     public function viewAny(User $user): bool
     {
-        $roles = $user->roles->pluck('name'); // Cache rollen in de variabele
-        return $roles->contains('admin') ||
-            $roles->contains('author') ||
-            $roles->contains('subscriber');
+        return $user->roles()->pluck('name')->contains('admin') ||
+            $user->roles()->pluck('name')->contains('author') ||
+            $user->roles()->pluck('name')->contains('subscriber');
     }
 
     /**
@@ -34,7 +34,7 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
-        return $user->roles->pluck('name')->contains(fn ($role) => in_array($role, ['admin', 'author']));
+        return $user->roles()->pluck('name')->contains(fn ($role) => in_array($role, ['admin', 'author']));
     }
 
     /**
@@ -44,7 +44,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        return $user->roles->pluck('name')->contains('admin') ||
+        return $user->roles()->pluck('name')->contains('admin') ||
             $user->id === $post->author_id;
     }
 
@@ -55,7 +55,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        return $user->roles->pluck('name')->contains('admin') ||
+        return $user->roles()->pluck('name')->contains('admin') ||
             $user->id === $post->author_id;
     }
 
@@ -65,7 +65,7 @@ class PostPolicy
      */
     public function restore(User $user, Post $post): bool
     {
-        return $user->roles->pluck('name')->contains('admin');
+        return $user->roles()->pluck('name')->contains('admin');
     }
 
     /**
@@ -74,6 +74,6 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post): bool
     {
-        return $user->roles->pluck('name')->contains('admin');
+        return $user->roles()->pluck('name')->contains('admin');
     }
 }

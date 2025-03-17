@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\PostCreated;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Photo;
 use App\Models\Post;
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,30 +15,36 @@ use Illuminate\Support\Str;
 class PostController extends Controller
 {
     use AuthorizesRequests;
+
+
+
+    
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         //
-       $search = request('search');
-       $categoryIds = request('category_ids',[]);
+        $search = request('search');
+        $categoryIds = request('category_ids', []);
 
-       //Concreet voorbeeld zonder author.roles:
-        //SELECT * FROM posts; -- Haalt alle posts op
-        //SELECT * FROM users WHERE id = ?; -- Wordt herhaald voor elke post
-        //SELECT * FROM roles INNER JOIN role_user WHERE user_id = ?; -- Wordt herhaald voor elke user
+        // Concreet voorbeeld zonder author.roles:
+        // SELECT * FROM posts; -- Haalt alle posts op
+        // SELECT * FROM users WHERE id = ?; -- Wordt herhaald voor elke post
+        // SELECT * FROM roles INNER JOIN role_user WHERE user_id = ?; -- Wordt herhaald voor elke user
 
-        $posts =Post::with(['author.role','photo','categories'])
+        $posts = Post::with(['author.roles', 'photo', 'categories'])
             ->published()
             ->filter($search)
             ->inCategories($categoryIds)
             ->sortable()
             ->paginate(5)
-            ->appends(request()->query());//;
+            ->appends(request()->query()); // ;
 
-        $categories = Category::pluck('name','id');
-        return view('backend.posts.index',compact('posts','categories'));
+        $categories = Category::pluck('name', 'id');
+
+        return view('backend.posts.index', compact('posts', 'categories'));
     }
 
     /**
@@ -47,8 +53,9 @@ class PostController extends Controller
     public function create()
     {
         //
-        $categories = Category::pluck('name','id');
-        return view('backend.posts.create',compact('categories'));
+        $categories = Category::pluck('name', 'id');
+
+        return view('backend.posts.create', compact('categories'));
     }
 
     /**
@@ -59,7 +66,7 @@ class PostController extends Controller
         //
         $validated = $request->validated();
 
-        $validated['author_id']=auth()->user()->id;
+        $validated['author_id'] = auth()->user()->id;
 
         // Genereer basis slug
         $slug = Str::slug($validated['title']);
@@ -67,27 +74,27 @@ class PostController extends Controller
         $counter = 1;
         // Controleer of de slug al bestaat en pas deze aan indien nodig
         while (Post::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = $originalSlug.'-'.$counter;
             $counter++;
         }
         $validated['slug'] = $slug;
-        //afbeelding opslaan
-        if($request->hasFile('photo_id')){
+        // afbeelding opslaan
+        if ($request->hasFile('photo_id')) {
             $file = $request->file('photo_id');
-            $path = $file->store('posts','public');
+            $path = $file->store('posts', 'public');
             $photo = Photo::create([
-                'path'=>$path,
-                'alternate_text'=>$validated['title']
+                'path' => $path,
+                'alternate_text' => $validated['title'],
             ]);
-            $validated['photo_id']=$photo->id;
+            $validated['photo_id'] = $photo->id;
         }
         $post = Post::create($validated);
         $post->categories()->sync($request->categories);
 
-        //events triggeren
+        // events triggeren
         PostCreated::dispatch($post);
 
-        return redirect()->route('posts.index')->with('message','Post created successfully!');
+        return redirect()->route('posts.index')->with('message', 'Post created successfully!');
     }
 
     /**
@@ -96,7 +103,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
-        return view('backend.posts.show',compact('post'));
+        return view('backend.posts.show', compact('post'));
     }
 
     /**
@@ -105,8 +112,9 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
-        $categories = Category::pluck('name','id');
-        return view('backend.posts.edit',compact('post','categories'));
+        $categories = Category::pluck('name', 'id');
+
+        return view('backend.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -119,7 +127,7 @@ class PostController extends Controller
         $this->authorize('update', $post);
         $validated = $request->validated();
         $validated['slug'] = Str::slug($validated['title']);
-        $validated['author_id']=$post->author_id;
+        $validated['author_id'] = $post->author_id;
         // Afbeelding bijwerken
         if ($request->hasFile('photo_id')) {
             if ($post->photo && Storage::disk('public')->exists($post->photo->path)) {
@@ -131,14 +139,14 @@ class PostController extends Controller
             if ($post->photo) {
                 $post->photo->update([
                     'path' => $path,
-                    'alternate_text' => $validated['title']
+                    'alternate_text' => $validated['title'],
                 ]);
                 $validated['photo_id'] = $post->photo->id;
             } else {
                 // Maak een nieuwe foto aan
                 $photo = Photo::create([
                     'path' => $path,
-                    'alternate_text' => $validated['title']
+                    'alternate_text' => $validated['title'],
                 ]);
                 $validated['photo_id'] = $photo->id;
             }
@@ -148,6 +156,7 @@ class PostController extends Controller
         }
         $post->update($validated);
         $post->categories()->sync($request->categories);
+
         return redirect()->route('posts.index')->with('message', 'Post succesvol bijgewerkt.');
     }
 
@@ -156,12 +165,13 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //fysisch op de schijf
-        if($post->photo && Storage::disk('public')->exists($post->photo->path)){
+        // fysisch op de schijf
+        if ($post->photo && Storage::disk('public')->exists($post->photo->path)) {
             Storage::disk('public')->delete($post->photo->path);
         }
-        //delete zelf db
+        // delete zelf db
         $post->delete();
+
         return redirect()->route('posts.index')->with('message', 'Post deleted successfully!');
     }
 }

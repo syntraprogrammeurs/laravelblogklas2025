@@ -19,11 +19,13 @@ class ContactController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'message' => 'required'
+            'message' => 'required',
         ]);
 
         Mail::to('syntraprogrammeurs@gmail.com')->send(new ContactMail($data));
 
-        return redirect()->route('contact.create')->with('status', 'Bericht succesvol verzonden!');
+        return redirect()
+            ->route('contact.create')
+            ->with('status', 'Bericht succesvol verzonden!');
     }
 }

@@ -5,30 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    use SoftDeletes, AuthorizesRequests;//Trait
+    use AuthorizesRequests; // Trait
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $categories = Category::withCount('posts')->withTrashed()->paginate(3);
-        return view('backend.categories.index',compact('categories'));
-    }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-        return view('backend.categories.create');
+        return view('backend.categories.index', compact('categories'));
     }
 
     /**
@@ -37,8 +27,18 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         //
-        Category::create([$request->validated()]);
-        return redirect()->route('categories.index')->with('message','Category created successfully!');
+        Category::create($request->validated());
+
+        return redirect()->route('categories.index')->with('message', 'Category created successfully!');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+        return view('backend.categories.create');
     }
 
     /**
@@ -55,7 +55,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         //
-        return view('backend.categories.edit',compact('category'));
+        return view('backend.categories.edit', compact('category'));
     }
 
     /**
@@ -65,8 +65,9 @@ class CategoryController extends Controller
     {
         //
         $this->authorize('update', $category);
-        Category::update([$request->validated()]);
-        return redirect()->route('categories.index')->with('message','Category updated successfully!');
+        $category->update($request->validated());
+
+        return redirect()->route('categories.index')->with('message', 'Category updated successfully!');
     }
 
     /**
@@ -77,22 +78,29 @@ class CategoryController extends Controller
         //
         $this->authorize('delete', $category);
         $category->delete();
-        return back()->with('message','Category deleted successfully!');
+
+        return back()->with('message', 'Category deleted successfully!');
     }
-    public function restore($id){
+
+    public function restore($id)
+    {
         $category = Category::withTrashed()->findOrFail($id);
         $this->authorize('restore', $category);
 
         $category->restore();
+
         return back()->with('message', 'Category restored successfully!');
     }
-    public function forceDelete($id){
-       $category = Category::withTrashed()->findOrFail($id);
-       $this->authorize('forceDelete', $category);
-       if($category->posts()->exists()){
-           return back()->with('message', 'Category has posts, cannot delete!');
-       }
+
+    public function forceDelete($id)
+    {
+        $category = Category::withTrashed()->findOrFail($id);
+        $this->authorize('forceDelete', $category);
+        if ($category->posts()->exists()) {
+            return back()->with('message', 'Category has posts, cannot delete!');
+        }
         $category->forceDelete();
+
         return back()->with('message', 'Category deleted permanently!');
     }
 }
