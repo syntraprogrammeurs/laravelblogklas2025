@@ -57,7 +57,11 @@ class NewPostNotification extends Notification
             //
             'post_id' => $this->post->id,
             'title' => $this->post->title,
+<<<<<<< HEAD
             'author' => $this->post->author->name,
+=======
+            'author' => $this->post->author()->first()->name,
+>>>>>>> larastan
             'url' => route('posts.show', $this->post->slug),
         ];
     }

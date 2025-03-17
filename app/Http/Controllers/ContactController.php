@@ -24,6 +24,8 @@ class ContactController extends Controller
 
         Mail::to('syntraprogrammeurs@gmail.com')->send(new ContactMail($data));
 
-        return redirect()->route('contact.create')->with('status', 'Bericht succesvol verzonden!');
+        return redirect()
+            ->route('contact.create')
+            ->with('status', 'Bericht succesvol verzonden!');
     }
 }

@@ -14,6 +14,7 @@ class Post extends Model
     use HasFactory, RecordUserActivity, SoftDeletes,Sortable;
 
     /* properties */
+
     protected $fillable = ['author_id', 'photo_id', 'title', 'content', 'slug', 'is_published', 'created_by', 'updated_by'];
 
     // protected $guarded=['id'];

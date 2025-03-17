@@ -1,3 +1,4 @@
+@php use App\Models\Category; @endphp
 @extends('layouts.backend')
 @section('title', 'Categories')
 @section('breadcrumb')
@@ -9,8 +10,9 @@
         @include('layouts.partials.flash_message')
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h1 class="h3">Category Management</h1>
-            @can('create', \App\Models\Category::class)
-                <a href="{{ route('categories.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> New Category</a>
+            @can('create', Category::class)
+                <a href="{{ route('categories.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> New
+                    Category</a>
             @endcan
         </div>
 
@@ -40,18 +42,21 @@
                             </td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    @if(!$category->trashed()) <!-- Alleen tonen als de categorie NIET verwijderd is -->
-                                    @can('update', $category)
-                                        <a href="{{ route('categories.edit', $category) }}"
-                                           class="btn btn-sm btn-info"
-                                           title="Edit Category">
-                                            <i class="fas fa-edit text-white"></i>
-                                        </a>
-                                    @endcan
+                                    @if(!$category->trashed())
+                                        <!-- Alleen tonen als de categorie NIET verwijderd is -->
+                                        @can('update', $category)
+                                            <a href="{{ route('categories.edit', $category) }}"
+                                               class="btn btn-sm btn-info"
+                                               title="Edit Category">
+                                                <i class="fas fa-edit text-white"></i>
+                                            </a>
+                                        @endcan
                                     @endif
                                     @if($category->trashed())
                                         @can('restore', $category)
-                                            <form method="POST" action="{{ route('categories.restore', $category->id) }}" style="display:inline;">
+                                            <form method="POST"
+                                                  action="{{ route('categories.restore', $category->id) }}"
+                                                  style="display:inline;">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit"
@@ -62,7 +67,9 @@
                                             </form>
                                         @endcan
                                         @can('forceDelete', $category)
-                                            <form method="POST" action="{{ route('categories.forceDelete', $category->id) }}" style="display:inline;">
+                                            <form method="POST"
+                                                  action="{{ route('categories.forceDelete', $category->id) }}"
+                                                  style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
@@ -75,7 +82,8 @@
                                         @endcan
                                     @else
                                         @can('delete', $category)
-                                            <form method="POST" action="{{ route('categories.destroy', $category) }}" style="display:inline;">
+                                            <form method="POST" action="{{ route('categories.destroy', $category) }}"
+                                                  style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"

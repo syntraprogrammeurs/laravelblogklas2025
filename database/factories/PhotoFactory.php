@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Photo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Photo>
+ * @extends Factory<Photo>
  */
 class PhotoFactory extends Factory
 {
@@ -16,10 +17,15 @@ class PhotoFactory extends Factory
      */
     public function definition(): array
     {
+<<<<<<< HEAD
         return [
             //
             'path' => 'https://placehold.co/640x480',
             'alternate_text' => fake()->sentence(6),
         ];
+=======
+        return [//
+            'path' => 'https://placehold.co/640x480', 'alternate_text' => fake()->sentence(6),];
+>>>>>>> larastan
     }
 }
