@@ -1,2 +1,2 @@
-<h3>{{$post->title}}</h3>
-<p>{{$post->content}}</p>
+<x-frontend.content.post.single-post-area :post="$post"/>
+<x-frontend.content.post.discussion-area/>

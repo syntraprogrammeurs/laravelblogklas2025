@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 // frontend
 
 Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
-// Route::get('/posts/{post:slug}', [FrontendPostController::class, 'show'])->name('frontend.posts.show');
+Route::get('/posts/{post:slug}', [FrontendPostController::class, 'show'])->name('frontend.posts.show');
 // Route voor het contactformulier
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
