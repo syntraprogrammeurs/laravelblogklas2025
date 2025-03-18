@@ -14,17 +14,12 @@ class PostPolicy
      */
     public function viewAny(User $user): bool
     {
-<<<<<<< HEAD
+
         $roles = $user->roles->pluck('name'); // Cache rollen in de variabele
 
         return $roles->contains('admin') ||
             $roles->contains('author') ||
             $roles->contains('subscriber');
-=======
-        return $user->roles()->pluck('name')->contains('admin') ||
-            $user->roles()->pluck('name')->contains('author') ||
-            $user->roles()->pluck('name')->contains('subscriber');
->>>>>>> larastan
     }
 
     /**
