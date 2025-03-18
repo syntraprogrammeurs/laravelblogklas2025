@@ -1,7 +1,7 @@
 <section class="welcome-blog-post-slide owl-carousel">
     @foreach($breakingNews->shuffle()->take(4) as $news)
         <!-- Single Blog Post -->
-        <div class="single-blog-post-slide bg-img background-overlay-5" style="background-image: url({{asset('assets/img/'.$news->photo->path)}});">
+        <div class="single-blog-post-slide bg-img background-overlay-5" style="background-image: url({{asset('assets/frontend/img/bg-img/1.jpg')}});">
             <!-- Single Blog Post Content -->
             <div class="single-blog-post-content">
                 <div class="tags">
