@@ -1,5 +1,3 @@
-@props(['breakingNews'])
-
 <div class="col-12 col-md-6">
     <div class="breaking-news-area">
         <h5 class="breaking-news-title">Breaking news</h5>

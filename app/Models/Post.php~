@@ -66,7 +66,7 @@ class Post extends Model
             ->with([
                 'author:id,name',
                 'photo:id,path',
-                'categories:id,name',
+                'categories:id,'
             ]);
     }
     // scope:filter op posts op basis van categorieen (polymorfe relatie)

@@ -3,7 +3,7 @@
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <!-- Breaking News Area -->
-                <x-frontend.header.breaking-news-area :breakingNews="$breakingNews"/>
+                <x-frontend.header.breaking-news-area/>
                 <!-- Stock News Area -->
                 <x-frontend.header.stock-news-area/>
             </div>
@@ -12,5 +12,5 @@
     <!-- Middle Header Area -->
     <x-frontend.header.middle/>
     <!-- Bottom Header Area -->
-   <x-frontend.header.navigation :categories="$categories"/>
+   <x-frontend.header.navigation/>
 </header>

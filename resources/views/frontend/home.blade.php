@@ -1,4 +1,4 @@
-<x-frontend.layout title="Home - The Gazette" :breakingNews="$breakingNews" :categories="$categories">
+<x-frontend.layout title="Home - The Gazette">
     <x-frontend.content.home.welcome/>
     <x-frontend.content.home.latest-news-marquee/>
     <x-frontend.content.home.main-content/>
