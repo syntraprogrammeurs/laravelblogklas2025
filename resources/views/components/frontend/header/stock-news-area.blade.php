@@ -5,87 +5,29 @@
                 <li>
                     <div class="single-stock-report">
                         <div class="stock-values">
-                            <span>eur/usd</span>
-                            <span>1.1862</span>
+                            <span>EUR/USD</span>
+                            <span>{{ $stockData['eur_usd']['price'] ?? 'N/A' }}</span>
                         </div>
-                        <div class="stock-index minus-index">
-                            <h4>0.18</h4>
-                        </div>
-                    </div>
-                    <div class="single-stock-report">
-                        <div class="stock-values">
-                            <span>BTC/usd</span>
-                            <span>15.674.99</span>
-                        </div>
-                        <div class="stock-index plus-index">
-                            <h4>8.60</h4>
+                        <div class="stock-index {{ isset($stockData['eur_usd']['change']) && is_numeric($stockData['eur_usd']['change']) && $stockData['eur_usd']['change'] >= 0 ? 'plus-index' : 'minus-index' }}">
+                            <h4>{{ $stockData['eur_usd']['change_percent'] ?? 'N/A' }}</h4>
                         </div>
                     </div>
                     <div class="single-stock-report">
                         <div class="stock-values">
-                            <span>ETH/usd</span>
-                            <span>674.99</span>
+                            <span>BTC/USD</span>
+                            <span>{{ $stockData['btc_usd']['price'] ?? 'N/A' }}</span>
                         </div>
-                        <div class="stock-index minus-index">
-                            <h4>13.60</h4>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="single-stock-report">
-                        <div class="stock-values">
-                            <span>eur/usd</span>
-                            <span>1.1862</span>
-                        </div>
-                        <div class="stock-index minus-index">
-                            <h4>0.18</h4>
+                        <div class="stock-index {{ isset($stockData['btc_usd']['change']) && is_numeric($stockData['btc_usd']['change']) && $stockData['btc_usd']['change'] >= 0 ? 'plus-index' : 'minus-index' }}">
+                            <h4>{{ $stockData['btc_usd']['change_percent'] ?? 'N/A' }}</h4>
                         </div>
                     </div>
                     <div class="single-stock-report">
                         <div class="stock-values">
-                            <span>BTC/usd</span>
-                            <span>15.674.99</span>
+                            <span>ETH/USD</span>
+                            <span>{{ $stockData['eth_usd']['price'] ?? 'N/A' }}</span>
                         </div>
-                        <div class="stock-index plus-index">
-                            <h4>8.60</h4>
-                        </div>
-                    </div>
-                    <div class="single-stock-report">
-                        <div class="stock-values">
-                            <span>ETH/usd</span>
-                            <span>674.99</span>
-                        </div>
-                        <div class="stock-index minus-index">
-                            <h4>13.60</h4>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="single-stock-report">
-                        <div class="stock-values">
-                            <span>eur/usd</span>
-                            <span>1.1862</span>
-                        </div>
-                        <div class="stock-index minus-index">
-                            <h4>3.95</h4>
-                        </div>
-                    </div>
-                    <div class="single-stock-report">
-                        <div class="stock-values">
-                            <span>BTC/usd</span>
-                            <span>15.674.99</span>
-                        </div>
-                        <div class="stock-index plus-index">
-                            <h4>4.78</h4>
-                        </div>
-                    </div>
-                    <div class="single-stock-report">
-                        <div class="stock-values">
-                            <span>ETH/usd</span>
-                            <span>674.99</span>
-                        </div>
-                        <div class="stock-index minus-index">
-                            <h4>11.37</h4>
+                        <div class="stock-index {{ isset($stockData['eth_usd']['change']) && is_numeric($stockData['eth_usd']['change']) && $stockData['eth_usd']['change'] >= 0 ? 'plus-index' : 'minus-index' }}">
+                            <h4>{{ $stockData['eth_usd']['change_percent'] ?? 'N/A' }}</h4>
                         </div>
                     </div>
                 </li>

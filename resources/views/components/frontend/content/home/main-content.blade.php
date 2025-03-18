@@ -76,26 +76,18 @@
                         <div class="widget-title">
                             <h5>breaking news</h5>
                         </div>
-                        <!-- Single Breaking News Widget -->
-                        <div class="single-breaking-news-widget">
-                            <img src="{{asset('assets/frontend/img/blog-img/bn-1.jpg')}}" alt="">
-                            <div class="breakingnews-title">
-                                <p>breaking news</p>
+                        @foreach($breakingNews->shuffle()->take(2) as $news)
+                            <div class="single-breaking-news-widget">
+                                <img class="img-fluid img-thumbnail" src="{{asset('assets/img/' . $news->photo->path)}}" alt="">
+                                <div class="breakingnews-title">
+                                    <p>breaking news</p>
+                                </div>
+                                <div class="breaking-news-heading gradient-background-overlay">
+                                    <h5 class="font-pt">{{$news->title}}</h5>
+                                </div>
                             </div>
-                            <div class="breaking-news-heading gradient-background-overlay">
-                                <h5 class="font-pt">China leads new global skyscraper record</h5>
-                            </div>
-                        </div>
-                        <!-- Single Breaking News Widget -->
-                        <div class="single-breaking-news-widget">
-                            <img src="{{asset('assets/frontend/img/blog-img/bn-2.jpg')}}" alt="">
-                            <div class="breakingnews-title">
-                                <p>breaking news</p>
-                            </div>
-                            <div class="breaking-news-heading gradient-background-overlay">
-                                <h5 class="font-pt">Can a zebra crossing change its stripes?</h5>
-                            </div>
-                        </div>
+                        @endforeach
+
                     </div>
 
                     <!-- Don't Miss Widget -->
