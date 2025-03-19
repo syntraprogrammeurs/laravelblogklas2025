@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Photo;
 use App\Models\Post;
+use App\Services\ExportService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,6 +16,30 @@ use Illuminate\Support\Str;
 class PostController extends Controller
 {
     use AuthorizesRequests;
+
+    protected ExportService $exportService; // object varia
+
+    public function __construct(ExportService $exportService)
+    {
+        $this->exportService = $exportService;
+    }
+
+    public function exportAll($format)
+    {
+        $posts = Post::all();
+        $headers = ['ID', 'Title', 'Author', 'Published', 'Created_at', 'Updated_at'];
+
+        return $this->exportService->export($format, $posts, $headers, 'posts');
+    }
+
+    //    public function exportOnePost($format, $id)
+    //    {
+    //        $post = Post::findOrFail($id);
+    //        $headers = ['ID', 'Title', 'Author', 'Published', 'Created_at', 'Updated_at'];
+    //
+    //        return $this->exportService->export($format, $post, $headers, 'posts');
+    //
+    //    }
 
     /**
      * Display a listing of the resource.

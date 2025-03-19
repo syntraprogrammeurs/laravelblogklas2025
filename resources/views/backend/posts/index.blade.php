@@ -7,6 +7,14 @@
 @section('content')
     <div class="container-fluid px-4">
 {{--        @include('layouts.partials.flash_message')--}}
+        <div class="d-flex gap-2 mb-3">
+            <a href="{{ route('posts.export', 'csv') }}" class="btn btn-sm btn-primary">Export CSV</a>
+            <a href="{{ route('posts.export', 'xlsx') }}" class="btn btn-sm btn-success">Export Excel</a>
+            <a href="{{ route('posts.export', 'pdf') }}" class="btn btn-sm btn-danger">Export PDF</a>
+            <a href="{{ route('posts.export', 'json') }}" class="btn btn-sm btn-info">Export JSON</a>
+            <a href="{{ route('posts.export', 'xml') }}" class="btn btn-sm btn-secondary">Export XML</a>
+        </div>
+
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h1 class="h3">Posts Beheer</h1>
             @can('create', App\Models\Post::class)

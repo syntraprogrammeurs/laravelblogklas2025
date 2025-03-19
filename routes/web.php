@@ -37,6 +37,8 @@ Route::group(['prefix' => 'backend', 'middleware' => ['auth', 'admin', 'verified
 
 Route::group(['prefix' => 'backend', 'middleware' => ['auth', 'verified']], function () {
     Route::resource('/posts', PostController::class)->scoped(['post' => 'slug']);
+    Route::get('/posts/export/{format}', [PostController::class, 'exportAll'])->name('posts.export');
+    //    Route::get('/posts/export/{format}/{id}', [PostController::class, 'exportOnePost'])->name('posts.export');
 });
 
 Route::get('/backend', function () {
