@@ -22,18 +22,22 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // onze gegevens ophalen en nu delen MET ALLE VIEWS
-        $breakingNews = Post::published()
-            ->latest()
-            ->take(6)
-            ->get();
+        // Controleer of de code niet draait in de console en of de tabellen bestaan
+        if (! app()->runningInConsole() && Schema::hasTable('posts') && Schema::hasTable('categories')) {
 
-        $categories = Category::withCount('posts')->having('posts_count', '>', 0)->get();
+            // Haal alleen gegevens op als de database klaar is
+            $breakingNews = Post::published()
+                ->latest()
+                ->take(6)
+                ->get();
 
-        // deel deze variabelen MET ALLE VIEWS
-        View::share([
-            'breakingNews' => $breakingNews,
-            'categories' => $categories,
-        ]);
+            $categories = Category::withCount('posts')->having('posts_count', '>', 0)->get();
+
+            // Deel deze variabelen met alle views
+            View::share([
+                'breakingNews' => $breakingNews,
+                'categories' => $categories,
+            ]);
+        }
     }
 }
