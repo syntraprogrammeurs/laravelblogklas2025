@@ -6,7 +6,7 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
                 Home
             </a>
-            <div class="sb-sidenav-menu-heading">Interface</div>
+            <div class="sb-sidenav-menu-heading">Backend</div>
 
             @can('ViewAdminPanel', App\Models\User::class)
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
