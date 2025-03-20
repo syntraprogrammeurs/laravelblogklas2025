@@ -23,16 +23,19 @@ class StockProvider extends ServiceProvider
      */
     public function boot()
     {
-        $apiKey = config('services.alphavantage.key'); // API-key ophalen
-        $stockData = Cache::remember('stock_data', now()->addMinutes(10), function () use ($apiKey) {
-            return [
-                'eur_usd' => $this->getStockData('EURUSD', $apiKey),
-                'btc_usd' => $this->getStockData('BTCUSD', $apiKey),
-                'eth_usd' => $this->getStockData('ETHUSD', $apiKey),
-            ];
-        });
+        if (! app()->runningInConsole()) {
+            $apiKey = config('services.alphavantage.key'); // API-key ophalen
 
-        View::share('stockData', $stockData);
+            $stockData = Cache::remember('stock_data', now()->addMinutes(10), function () use ($apiKey) {
+                return [
+                    'eur_usd' => $this->getStockData('EURUSD', $apiKey),
+                    'btc_usd' => $this->getStockData('BTCUSD', $apiKey),
+                    'eth_usd' => $this->getStockData('ETHUSD', $apiKey),
+                ];
+            });
+
+            View::share('stockData', $stockData);
+        }
     }
 
     private function getStockData($symbol, $apiKey)
