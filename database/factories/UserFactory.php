@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'is_active' => fake()->boolean(), // willekeurig 1 of 0
-            'photo_id' => Photo::inRandomOrder()->first()->id,
+            'photo_id' => Photo::inRandomOrder()->first()?->id ?? null,
         ];
     }
 

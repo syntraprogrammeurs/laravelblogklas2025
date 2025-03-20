@@ -19,6 +19,10 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 // backend
 
+Route::get('/dashboard', function () {
+    return view('backend.index');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::group(['prefix' => 'backend', 'middleware' => ['auth', 'admin', 'verified']], function () {
     Route::resource('/users', UserController::class);
     Route::patch('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
