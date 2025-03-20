@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
-    use SoftDeletes; //Trait
+    use SoftDeletes; // Trait
+
     //
     protected $fillable = [
         'name',
     ];
-    public function posts(){
-        return $this->morphedByMany(Post::class,'categoryable');
+
+    public function posts()
+    {
+        return $this->morphedByMany(Post::class, 'categoryable');
     }
 }

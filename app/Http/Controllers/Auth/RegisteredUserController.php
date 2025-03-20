@@ -40,11 +40,11 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'is_active'=>1,
+            'is_active' => 1,
         ]);
 
-        //role toevoegen
-        $role = Role::where('name','subscriber')->first();
+        // role toevoegen
+        $role = Role::where('name', 'subscriber')->first();
         $user->roles()->attach($role->id);
 
         event(new Registered($user));
