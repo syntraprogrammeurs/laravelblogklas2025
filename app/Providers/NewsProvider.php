@@ -22,12 +22,15 @@ class NewsProvider extends ServiceProvider
      */
     public function boot()
     {
-        $apiKey = config('services.newsapi.key');
-        // Cache breaking news voor 5 minuten
-        $brNews = Cache::remember('brNews', now()->addMinutes(5), function () use ($apiKey) {
-            return $this->fetchBreakingNews($apiKey);
-        });
-        View::share('brNews', $brNews);
+        if (! app()->runningInConsole()) {
+            $apiKey = config('services.newsapi.key');
+
+            $brNews = Cache::remember('brNews', now()->addMinutes(5), function () use ($apiKey) {
+                return $this->fetchBreakingNews($apiKey);
+            });
+
+            View::share('brNews', $brNews);
+        }
     }
 
     private function fetchBreakingNews($apiKey)
