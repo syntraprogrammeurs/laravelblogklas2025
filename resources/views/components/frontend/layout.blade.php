@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="{{asset('assets/frontend/css/core-style.css')}}">
     <!-- Responsive CSS -->
     <link href="{{asset('assets/frontend/css/responsive.css')}}" rel="stylesheet">
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 </head>
 
