@@ -36,9 +36,18 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        Category::create($request->validated());
+        try {
+            $category = Category::create([
+                'name' => $request->name,
+                'slug' => str()->slug($request->name),
+            ]);
 
-        return redirect()->route('categories.index')->with('message', 'Category created successfully!');
+            return redirect()->route('categories.index')
+                ->with('message', 'Category created successfully!');
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->with('error', 'Failed to create category. Please try again.');
+        }
     }
 
     /**
@@ -54,8 +63,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
-        return view('backend.categories.edit', compact('category'));
+        // Removed as we're using a modal form
     }
 
     /**
@@ -64,9 +72,18 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         $this->authorize('update', $category);
-        $category->update($request->validated());
+        try {
+            $category->update([
+                'name' => $request->name,
+                'slug' => str()->slug($request->name),
+            ]);
 
-        return redirect()->route('categories.index')->with('message', 'Category updated successfully!');
+            return redirect()->route('categories.index')
+                ->with('message', 'Category updated successfully!');
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->with('error', 'Failed to update category. Please try again.');
+        }
     }
 
     /**

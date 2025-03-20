@@ -41,7 +41,6 @@
                 <div class="collapse" id="collapseCategories" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="{{ route('categories.index') }}">All Categories</a>
-                        <a class="nav-link" href="{{ route('categories.create') }}">Create Category</a>
                     </nav>
                 </div>
             @endcan
