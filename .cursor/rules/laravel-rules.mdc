@@ -1,0 +1,128 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Laravel 12 & PHP 8.3+ Style Guide
+
+## General Principles
+
+- Provide concise, clear, and technical responses with accurate Laravel 12 and PHP 8.3+ examples.
+- Follow Laravel's official conventions and directory structure for all files and classes.
+- Prioritize SOLID principles and Clean Architecture for scalability and maintainability.
+- Favor DRY (Don't Repeat Yourself) principles and modularization.
+- Use clear, descriptive naming for variables, methods, classes, and files.
+
+## PHP Standards
+
+- Strict adherence to PSR-12 coding standards.
+- Enable strict typing:
+  ```php
+  declare(strict_types=1);
+  ```
+- Leverage PHP 8.3+ features:
+  - Readonly classes/properties
+  - Enumerations (Enums)
+  - Match expressions instead of switch
+  - Nullsafe operator (`?->`)
+  - Constructor property promotion
+  - PHP Attributes for configurations (routes, middleware, casting)
+- Explicitly declare return types and method parameter types.
+- Use camelCase for variables/methods, PascalCase for class names, snake_case for database fields.
+
+## Laravel Best Practices
+
+- Use Laravel’s built-in features and helpers extensively (Eloquent, Collections, validation).
+- Prefer Eloquent ORM and Query Builder over raw SQL.
+- Validate requests using Form Requests and Laravel Precognition for instant frontend validation.
+- Keep controllers thin; delegate complex logic to dedicated Service or Action classes.
+- Consistently implement Repository and Service patterns.
+- Utilize Laravel Policies and Gates for authorization.
+- Use Laravel Sanctum for API authentication and tokens.
+- Use built-in pagination methods provided by Laravel.
+
+## Directory & File Naming
+
+- Follow Laravel conventions:
+  - Models: Singular (e.g., `User.php`)
+  - Controllers: Plural (e.g., `UsersController.php`)
+  - Directories: lowercase with dashes (`app/http/controllers`)
+
+## Security
+
+- Implement built-in CSRF protection.
+- Prevent Cross-site scripting (XSS) via input sanitization.
+- Use middleware for security-related request filtering.
+
+## Error Handling & Logging
+
+- Use Laravel’s built-in exception handler (`Handler.php`) and logging (`Log::info()`, `Log::error()`).
+- Define custom exceptions for specific errors.
+- Handle anticipated exceptions with `try-catch`.
+
+## Database & Migrations
+
+- Always manage schemas via Laravel migrations and seeders.
+- Define clear Eloquent relationships.
+- Apply proper database indexing.
+
+## Queues & Scheduling
+
+- Manage queues and background tasks using Laravel Horizon.
+- Schedule recurring tasks via Laravel’s built-in scheduling.
+
+## APIs & Resources
+
+- Provide consistent JSON structures with API Resources and Resource Collections.
+- Clearly version APIs (`api/v1`, `api/v2`).
+
+## Testing
+
+- Write structured tests using PHPUnit, Pest PHP, Laravel Dusk.
+- Separate clearly into Unit, Feature, and Browser tests.
+
+## Asset Management
+
+- Use Laravel Vite for asset compilation and bundling.
+- Organize frontend code (`resources/js`, `resources/css`).
+
+## Performance & Caching
+
+- Use Laravel caching (Redis, Memcached) to boost performance.
+- Optimize database interactions using eager loading (`with()`).
+
+## Debugging & Monitoring
+
+- Utilize Laravel Pulse or Telescope for debugging and monitoring.
+- Integrate Laravel’s built-in monitoring tools proactively.
+
+## Comments & Documentation
+
+- Write concise comments for complex logic only.
+- Avoid redundant comments.
+
+## Architecture & Patterns
+
+- Decouple logic using Laravel’s Event-Listener system.
+- Prefer single-action controllers (invokable) or Action classes.
+- Consistently employ Repository and Service layers.
+
+## Final Classes & Readonly Properties
+
+- Controllers and Service classes should ideally be `final`.
+- Use `readonly` properties for Data Transfer Objects (DTOs) and services.
+
+## Exclude / Deprecated in Laravel 12
+
+Explicitly exclude:
+
+- Manual provider registration (`config/app.php`).
+- Manual edits or references to `app/Http/Kernel.php`.
+- Laravel Mix (replaced by Laravel Vite).
+- Annotations or DocBlocks for routes and middleware (use Attributes instead).
+- Practices explicitly tied to older Laravel versions (<12.x).
+- Manual namespace or autoload configurations handled automatically by Laravel.
+- Legacy validation methods (prefer Form Requests, Laravel Precognition).
+- Explicit manual routing when Laravel Folio or attribute-based routing can apply.
+- Legacy debugging packages (use Laravel Pulse or Telescope).
