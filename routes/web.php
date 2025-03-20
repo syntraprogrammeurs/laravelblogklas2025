@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FrontendPostController;
 use App\Http\Controllers\HomeController;
@@ -29,6 +30,8 @@ Route::group(['prefix' => 'backend', 'middleware' => ['auth', 'admin', 'verified
     Route::resource('/categories', CategoryController::class);
     Route::patch('/categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
     Route::delete('/categories/{id}/forceDelete', [CategoryController::class, 'forceDelete'])->name('categories.forceDelete');
+    Route::resource('/comments', CommentController::class);
+    Route::delete('/comments/{id}/forceDelete', [CommentController::class, 'forceDelete'])->name('comments.forceDelete');
 
     // notification route
     Route::patch('/notifications/{id}/read', function ($id) {
@@ -52,6 +55,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/comments/{comment}/reply', [CommentController::class, 'reply'])->name('comments.reply');
 });
 
 require __DIR__.'/auth.php';

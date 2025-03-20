@@ -46,6 +46,16 @@ class Post extends Model
         return $this->morphToMany(Category::class, 'categoryable');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     /* filters (scopes) */
     public function scopeFilter($query, $searchterm)
     {
